@@ -1,9 +1,11 @@
 import './App.css';
+import Button from '@mui/joy/Button';
 
 const App = () => {
   return(
     <div>
-      <h1>WELCOME TO NEW PROJECT</h1>
+      <Button variant="solid">Solid Button</Button>
+      <Button variant="soft">Soft Button</Button>
     </div>
   )
 }
