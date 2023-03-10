@@ -1,62 +1,118 @@
-import './App.css';
+import "./App.css";
 
-import ModeToggle from './ModeToggle';
+import { CssVarsProvider, Input, Typography, Checkbox, Card } from "@mui/joy";
+import { padding, Stack } from "@mui/system";
 
-import { AspectRatio, CssVarsProvider, FormControl, FormLabel, Input, Link, Sheet, Switch, Typography } from '@mui/joy';
-import Button from '@mui/joy/Button';
+import { useState } from "react";
 
 const App = () => {
-  return(
+  const [todoText, setTodoText] = useState("");
+  const [todoList, setTodoList] = useState([]);
+
+  const enterButton = (e) => {
+    if (e.key === "Enter") {
+      const tempArray = todoList.slice();
+      tempArray.push(todoText);
+      setTodoList(tempArray);
+      setTodoText("");
+    }
+  };
+
+  const handleChange = (e) => {
+    setTodoText(e.target.value);
+  };
+
+  return (
     <CssVarsProvider>
-      <ModeToggle/>
-      
-      <AspectRatio sx={{width:500}}>
-        <Typography level="h2" component="div">
-          16/9
-        </Typography>
-      </AspectRatio>
-      
-      <div>  
-        <Sheet
+      <Stack
+        sx={{
+          height: 300,
+          backgroundSize: "100%",
+          backgroundPosition: "center",
+          backgroundImage: "url('https://raw.githubusercontent.com/Keiji-Mizumura/image/main/background.jpg')",
+        }}
+      ></Stack>
+
+      <Stack
+        sx={{
+          position: "absolute",
+          width: "100%",
+          alignItems: "center",
+          top: 70,
+        }}
+      >
+        <Stack
           sx={{
-            width: 350,
-            px: 3,
-            py: 3,
-            borderRadius: 'sm',
-            boxShadow: 'md'
+            width: 540,
+            height: 500,
           }}
         >
-          <FormControl>
-            <FormLabel>Email:</FormLabel>
-            <Input 
-              name="email"
-              type="email"
-              placeholder="johndoe@gmail.com"
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Password:</FormLabel>
-            <Input 
-              name="password"
-              type="password"
-              placeholder="password"
-            />
-          </FormControl>
-          <Button sx={{ mt: 1 }}>
-            Log in
-          </Button>
           <Typography
-            endDecorator={<Link href="/sign-up">Sign up</Link>}
-            fontSize="sm"
-            sx={{ alignSelf: 'center'}}
+            level="h1"
+            textColor="neutral.100"
+            sx={{
+              fontSize: 40,
+              fontFamily: "'Josefin Sans', sans-serif",
+              letterSpacing: 15,
+            }}
           >
-            Don't have an account?
+            TODO
           </Typography>
-          <Switch/>
-        </Sheet>
-      </div>
+          <Input
+            onChange={handleChange}
+            onKeyUp={enterButton}
+            value={todoText}
+            sx={{
+              mt: 4,
+              padding: 0,
+              height: 64,
+              borderRadius: 5,
+              fontFamily: "'Josefin Sans', sans-serif",
+            }}
+            startDecorator={
+              <Checkbox
+                sx={{
+                  ml: "24px",
+                  mr: "12px",
+                }}
+              />
+            }
+            placeholder="Create a new todo..."
+          />
+
+          <Stack
+            sx={{
+              mt: "24px",
+              flexDirection: "column",
+            }}
+          >
+            {todoList.map((x) => (
+              <Card
+                variant="outlined"
+                sx={{
+                  borderRadius: 5,
+                  height: 32,
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Checkbox sx={{ mr: "24px" }} />
+              <Typography
+                sx={{
+                  fontFamily: "'Josefin Sans', sans-serif",
+                  color: "#494C6B",
+                }}
+                level="p"
+              >
+                {x}
+              </Typography>
+              </Card>
+            ))}
+          </Stack>
+        </Stack>
+      </Stack>
     </CssVarsProvider>
-  )
-}
+  );
+};
 
 export default App;
